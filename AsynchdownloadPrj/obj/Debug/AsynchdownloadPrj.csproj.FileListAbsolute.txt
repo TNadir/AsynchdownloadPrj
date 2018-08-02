@@ -1,0 +1,10 @@
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\bin\Debug\AsynchdownloadPrj.exe.config
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\bin\Debug\AsynchdownloadPrj.exe
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\bin\Debug\AsynchdownloadPrj.pdb
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\obj\Debug\AsynchdownloadPrj.csprojAssemblyReference.cache
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\obj\Debug\AsynchdownloadPrj.Form1.resources
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\obj\Debug\AsynchdownloadPrj.Properties.Resources.resources
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\obj\Debug\AsynchdownloadPrj.csproj.GenerateResource.cache
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\obj\Debug\AsynchdownloadPrj.csproj.CoreCompileInputs.cache
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\obj\Debug\AsynchdownloadPrj.exe
+D:\Projects\TestProjects\AsynchdownloadPrj\AsynchdownloadPrj\obj\Debug\AsynchdownloadPrj.pdb
