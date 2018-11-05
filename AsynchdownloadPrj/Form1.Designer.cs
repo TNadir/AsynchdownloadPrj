@@ -28,46 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.addUrl = new System.Windows.Forms.Button();
+            this.urlText = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.labelSpeed = new System.Windows.Forms.Label();
+            this.resultsWindow = new System.Windows.Forms.Label();
+            this.cancelOperation = new System.Windows.Forms.Button();
+            this.executeAsync = new System.Windows.Forms.Button();
+            this.dashboardProgress = new System.Windows.Forms.ProgressBar();
+            this.listUrls = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
-            // button1
+            // addUrl
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(643, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(134, 34);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Add to list for download file";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.addUrl.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.addUrl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.addUrl.Location = new System.Drawing.Point(443, 12);
+            this.addUrl.Name = "addUrl";
+            this.addUrl.Size = new System.Drawing.Size(187, 44);
+            this.addUrl.TabIndex = 0;
+            this.addUrl.Text = "Add url for download ";
+            this.addUrl.UseVisualStyleBackColor = false;
+            this.addUrl.Click += new System.EventHandler(this.addUrl_Click);
             // 
-            // listBox1
+            // urlText
             // 
-            this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(30, 65);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(580, 238);
-            this.listBox1.TabIndex = 1;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox1.Location = new System.Drawing.Point(133, 25);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(477, 20);
-            this.textBox1.TabIndex = 2;
+            this.urlText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.urlText.Location = new System.Drawing.Point(133, 25);
+            this.urlText.Name = "urlText";
+            this.urlText.Size = new System.Drawing.Size(289, 20);
+            this.urlText.TabIndex = 2;
             // 
             // label1
             // 
@@ -79,80 +68,68 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Enter URL";
             // 
-            // button2
+            // resultsWindow
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(643, 82);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(134, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Download";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.resultsWindow.AutoSize = true;
+            this.resultsWindow.Location = new System.Drawing.Point(654, 65);
+            this.resultsWindow.Name = "resultsWindow";
+            this.resultsWindow.Size = new System.Drawing.Size(0, 13);
+            this.resultsWindow.TabIndex = 10;
             // 
-            // button3
+            // cancelOperation
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(643, 128);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(134, 23);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Cancel";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.cancelOperation.BackColor = System.Drawing.Color.Red;
+            this.cancelOperation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cancelOperation.Location = new System.Drawing.Point(443, 204);
+            this.cancelOperation.Name = "cancelOperation";
+            this.cancelOperation.Size = new System.Drawing.Size(187, 47);
+            this.cancelOperation.TabIndex = 11;
+            this.cancelOperation.Text = "Cancel";
+            this.cancelOperation.UseVisualStyleBackColor = false;
+            this.cancelOperation.Click += new System.EventHandler(this.cancelOperation_Click);
             // 
-            // label2
+            // executeAsync
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 324);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "label2";
+            this.executeAsync.BackColor = System.Drawing.Color.Chartreuse;
+            this.executeAsync.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.executeAsync.Location = new System.Drawing.Point(443, 109);
+            this.executeAsync.Name = "executeAsync";
+            this.executeAsync.Size = new System.Drawing.Size(187, 47);
+            this.executeAsync.TabIndex = 12;
+            this.executeAsync.Text = "Download";
+            this.executeAsync.UseVisualStyleBackColor = false;
+            this.executeAsync.Click += new System.EventHandler(this.executeAsync_Click);
             // 
-            // button4
+            // dashboardProgress
             // 
-            this.button4.Location = new System.Drawing.Point(643, 177);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(134, 23);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.dashboardProgress.Location = new System.Drawing.Point(646, 22);
+            this.dashboardProgress.Name = "dashboardProgress";
+            this.dashboardProgress.Size = new System.Drawing.Size(403, 23);
+            this.dashboardProgress.TabIndex = 13;
             // 
-            // label3
+            // listUrls
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(643, 217);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "label3";
-            // 
-            // labelSpeed
-            // 
-            this.labelSpeed.AutoSize = true;
-            this.labelSpeed.Location = new System.Drawing.Point(33, 352);
-            this.labelSpeed.Name = "labelSpeed";
-            this.labelSpeed.Size = new System.Drawing.Size(35, 13);
-            this.labelSpeed.TabIndex = 9;
-            this.labelSpeed.Text = "label4";
+            this.listUrls.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listUrls.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.listUrls.FormattingEnabled = true;
+            this.listUrls.Location = new System.Drawing.Point(30, 65);
+            this.listUrls.Name = "listUrls";
+            this.listUrls.Size = new System.Drawing.Size(392, 186);
+            this.listUrls.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.labelSpeed);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.ClientSize = new System.Drawing.Size(1064, 800);
+            this.Controls.Add(this.dashboardProgress);
+            this.Controls.Add(this.executeAsync);
+            this.Controls.Add(this.cancelOperation);
+            this.Controls.Add(this.resultsWindow);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.urlText);
+            this.Controls.Add(this.listUrls);
+            this.Controls.Add(this.addUrl);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -162,16 +139,14 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button addUrl;
+        private System.Windows.Forms.TextBox urlText;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label labelSpeed;
+        private System.Windows.Forms.Label resultsWindow;
+        private System.Windows.Forms.Button cancelOperation;
+        private System.Windows.Forms.Button executeAsync;
+        private System.Windows.Forms.ProgressBar dashboardProgress;
+        private System.Windows.Forms.ListBox listUrls;
     }
 }
 

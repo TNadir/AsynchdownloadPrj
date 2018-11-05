@@ -1,154 +1,78 @@
-﻿using AsynchdownloadPrj.Properties;
+﻿using AsynchdownloadPrj.Services;
+using AsynchdownloadPrj.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AsynchdownloadPrj
 {
     public partial class Form1 : Form
     {
-        private readonly List<DocumentObject> _urllist;
-        private const string DiRpath = @"D://files/";
-        Stopwatch sw = new Stopwatch();
-        private long d;
-        private bool istoped = false;
+        private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly DownloadService _downloadService;
+
         public Form1()
         {
+            //We can inject this dependices as well
+            _cancellationTokenSource = new CancellationTokenSource();
+            _downloadService = new DownloadService();
             InitializeComponent();
-            //Here We can apply DI containers
-            _urllist = new List<DocumentObject>();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void addUrl_Click(object sender, EventArgs e)
         {
-            //list.Add(new DocumentObject { docUrl = "https://morooq.com/Content/UIContent/images/MorooqLogo.png" });
-
-            _urllist.Add(new DocumentObject { docUrl = textBox1.Text });
-            ShowUrLlist();
-        }
-
-        private void ShowUrLlist()
-        {
-            Invoke(new Action(() =>
-              {
-
-                  listBox1.Items.Clear();
-                  foreach (var item in _urllist)
-                  {
-                      listBox1.Items.Add(item.docUrl + " " + item.status);
-                  }
-                  CountFiles();
-
-              }));
-        }
-        private void CountFiles()
-        {
-            var list = Directory.GetFiles(DiRpath);
-            if (list.Length > 0)
+            if (!string.IsNullOrEmpty(urlText.Text))
             {
-                label2.Text = @"Downloaded files counts: " + list.Count();
+                listUrls.Items.Add(urlText.Text);
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ReportProgress(object sender, ProgressReportModel e)
         {
-
-            Task.Run(() => DownloadMultipleFilesAsync(_urllist));
-
+            dashboardProgress.Value = e.PercentageComplete;
+            PrintResults(e.SitesDownloaded);
         }
 
-        private async Task DownloadFileAsync(DocumentObject doc)
+        private async void executeAsync_Click(object sender, EventArgs e)
         {
-            var docobject = _urllist.FirstOrDefault(x => x.ID == doc.ID);
-            try
+            var listOfUrls = _downloadService.GetPreparedList(listUrls);
+            if (listOfUrls != null)
             {
-                using (var webClient = new WebClient())
+                Progress<ProgressReportModel> progress = new Progress<ProgressReportModel>();
+                progress.ProgressChanged += ReportProgress;
+
+                var watch = Stopwatch.StartNew();
+                try
                 {
-                    if (!istoped)
-                    {
-                        Thread.Sleep(2000);
-                        var downloadToDirectory = DiRpath + doc.docName;
-                        webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DoSomethingOnFinish);
-                        webClient.QueryString.Add("fileName", doc.ID.ToString());
-                        webClient.QueryString.Add("count", listBox1.Items.Count.ToString());
-                        webClient.DownloadProgressChanged += WebClient_DownloadProgressChanged;
-                        await webClient.DownloadFileTaskAsync(new Uri(doc.docUrl), downloadToDirectory);
-                    }
-                    else
-                    {
-                        
-                    }
-
-
-                    // if (docobject != null) docobject.status = "success downloaded";
-
+                    var results = await _downloadService.RunDownloadAsync(progress, _cancellationTokenSource.Token, listOfUrls);
+                    PrintResults(results);
                 }
+                catch (OperationCanceledException)
+                {
+                    resultsWindow.Text += $@"Downloading was cancelled. { Environment.NewLine }";
+                }
+
+                watch.Stop();
+                var elapsedMs = watch.ElapsedMilliseconds;
+
+                resultsWindow.Text += $@"Total execution time: { elapsedMs }";
             }
-            catch (Exception)
-            {
-                if (docobject != null) docobject.status = "downloading failed";
+        }
 
+        private void cancelOperation_Click(object sender, EventArgs e)
+        {
+            _cancellationTokenSource.Cancel();
+        }
+
+        private void PrintResults(List<UrlDataModel> results)
+        {
+            resultsWindow.Text = "";
+            foreach (var item in results)
+            {
+                resultsWindow.Text += $@"{ item.UrlName } downloaded: { item.UrlData.Length } characters long.{ Environment.NewLine }";
             }
-            ShowUrLlist();
-        }
-
-        void DoSomethingOnFinish(object sender, AsyncCompletedEventArgs e)
-        {
-
-            var myFileNameId = Convert.ToInt32(((System.Net.WebClient)(sender)).QueryString["fileName"]);
-            var count = Convert.ToInt32(((System.Net.WebClient)(sender)).QueryString["count"]);
-            var docobject = _urllist.FirstOrDefault(x => x.ID == myFileNameId);
-            if (docobject != null) docobject.status = "success downloaded";
-        }
-
-        private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            d += e.BytesReceived;
-            Invoke(new Action(() =>
-            {
-                labelSpeed.Text = string.Format("{0} kb/s", (d).ToString("0.00"));
-            }));
-
-        }
-
-        private async Task DownloadMultipleFilesAsync(List<DocumentObject> doclist)
-        {
-            // listBox1.Items.Clear();
-            await Task.WhenAll(doclist.Select(DownloadFileAsync));
-
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            label3.Text = "Starting";
-
-            var worker = new worker();
-            worker.DoWork();
-
-            while (!worker.IsComplete)
-            {
-                label3.Text = "," + worker.Value;
-                // Thread.Sleep(100);
-            }
-            label3.Text = "Done";
-            //Console.ReadKey();
         }
     }
 }
