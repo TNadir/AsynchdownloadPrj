@@ -71,7 +71,7 @@ namespace AsynchdownloadPrj
             resultsWindow.Text = "";
             foreach (var item in results)
             {
-                resultsWindow.Text += $@"{ item.UrlName } downloaded: { item.UrlData.Length } characters long.{ Environment.NewLine }";
+                resultsWindow.Text += $@"{ item.UrlName } downloaded: { item.UrlData } characters long.{ Environment.NewLine }";
             }
         }
     }
