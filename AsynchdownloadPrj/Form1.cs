@@ -58,7 +58,7 @@ namespace AsynchdownloadPrj
             var list = Directory.GetFiles(DiRpath);
             if (list.Length > 0)
             {
-                label2.Text = @"Downloaded files count: " + list.Count();
+                label2.Text = @"Downloaded files counts: " + list.Count();
             }
         }
 
