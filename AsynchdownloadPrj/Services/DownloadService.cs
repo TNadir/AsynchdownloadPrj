@@ -2,7 +2,6 @@
 using AsynchdownloadPrj.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,14 +11,6 @@ namespace AsynchdownloadPrj.Services
 {
     public class DownloadService : IDownloadService
     {
-        private readonly UrlDataModel _urlModel;
-        private readonly WebClient _client;
-        public DownloadService()
-        {
-            _urlModel = new UrlDataModel();
-            _client = new WebClient();
-        }
-
         public List<string> GetPreparedList(ListBox listBox)
         {
             var list = new List<string>();
@@ -29,7 +20,6 @@ namespace AsynchdownloadPrj.Services
             }
             return list;
         }
-
 
         public async Task<List<UrlDataModel>> RunDownloadAsync(IProgress<ProgressReportModel> progress, CancellationToken cancellationToken, List<string> websites)
         {
