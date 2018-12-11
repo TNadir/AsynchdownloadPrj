@@ -34,7 +34,6 @@
             this.resultsWindow = new System.Windows.Forms.Label();
             this.cancelOperation = new System.Windows.Forms.Button();
             this.executeAsync = new System.Windows.Forms.Button();
-            this.dashboardProgress = new System.Windows.Forms.ProgressBar();
             this.listUrls = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
@@ -100,13 +99,6 @@
             this.executeAsync.UseVisualStyleBackColor = false;
             this.executeAsync.Click += new System.EventHandler(this.executeAsync_Click);
             // 
-            // dashboardProgress
-            // 
-            this.dashboardProgress.Location = new System.Drawing.Point(646, 22);
-            this.dashboardProgress.Name = "dashboardProgress";
-            this.dashboardProgress.Size = new System.Drawing.Size(403, 23);
-            this.dashboardProgress.TabIndex = 13;
-            // 
             // listUrls
             // 
             this.listUrls.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -122,7 +114,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1064, 800);
-            this.Controls.Add(this.dashboardProgress);
             this.Controls.Add(this.executeAsync);
             this.Controls.Add(this.cancelOperation);
             this.Controls.Add(this.resultsWindow);
@@ -145,7 +136,6 @@
         private System.Windows.Forms.Label resultsWindow;
         private System.Windows.Forms.Button cancelOperation;
         private System.Windows.Forms.Button executeAsync;
-        private System.Windows.Forms.ProgressBar dashboardProgress;
         private System.Windows.Forms.ListBox listUrls;
     }
 }

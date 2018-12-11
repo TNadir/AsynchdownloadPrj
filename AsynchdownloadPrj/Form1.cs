@@ -1,23 +1,19 @@
-﻿using AsynchdownloadPrj.Services;
-using AsynchdownloadPrj.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
+using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AsynchdownloadPrj
 {
     public partial class Form1 : Form
     {
-        private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly DownloadService _downloadService;
-
+        private  CancellationTokenSource _cancellationTokenSource;
+        
         public Form1()
         {
-            //We can inject this dependices as well
-            _cancellationTokenSource = new CancellationTokenSource();
-            _downloadService = new DownloadService();
             InitializeComponent();
         }
 
@@ -28,51 +24,75 @@ namespace AsynchdownloadPrj
                 listUrls.Items.Add(urlText.Text);
             }
         }
-
-        private void ReportProgress(object sender, ProgressReportModel e)
-        {
-            dashboardProgress.Value = e.PercentageComplete;
-            PrintResults(e.SitesDownloaded);
-        }
-
         private async void executeAsync_Click(object sender, EventArgs e)
         {
-            var listOfUrls = _downloadService.GetPreparedList(listUrls);
-            if (listOfUrls != null)
+          
+            resultsWindow.Text=string.Empty;
+
+            _cancellationTokenSource = new CancellationTokenSource();
+
+            try
             {
-                Progress<ProgressReportModel> progress = new Progress<ProgressReportModel>();
-                progress.ProgressChanged += ReportProgress;
-
-                var watch = Stopwatch.StartNew();
-                try
-                {
-                    var results = await _downloadService.RunDownloadAsync(progress, _cancellationTokenSource.Token, listOfUrls);
-                    PrintResults(results);
-                }
-                catch (OperationCanceledException)
-                {
-                    resultsWindow.Text += $@"Downloading was cancelled. { Environment.NewLine }";
-                }
-
-                watch.Stop();
-                var elapsedMs = watch.ElapsedMilliseconds;
-
-                resultsWindow.Text += $@"Total execution time: { elapsedMs }";
+                await AccessTheWebAsync(_cancellationTokenSource.Token);
+                resultsWindow.Text += Environment.NewLine + @"Downloads complete.";
             }
+            catch (OperationCanceledException)
+            {
+                resultsWindow.Text += Environment.NewLine + @"Downloads canceled.";
+            }
+            catch (Exception)
+            {
+                resultsWindow.Text += Environment.NewLine + @"Downloads failed.";
+            }
+
+            _cancellationTokenSource = null;
         }
 
         private void cancelOperation_Click(object sender, EventArgs e)
         {
-            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource?.Cancel();
+        }
+        
+        async Task AccessTheWebAsync(CancellationToken ct)
+        {
+            HttpClient client = new HttpClient();
+
+            List<string> urlList = SetUpUrlList();
+
+            IEnumerable<Task<int>> downloadTasksQuery =
+                from url in urlList select ProcessURL(url, client, ct);
+
+            List<Task<int>> downloadTasks = downloadTasksQuery.ToList();
+
+            while (downloadTasks.Count > 0)
+            {
+                Task<int> firstFinishedTask = await Task.WhenAny(downloadTasks);
+
+                downloadTasks.Remove(firstFinishedTask);
+
+                int length = await firstFinishedTask;
+
+                resultsWindow.Text +=Environment.NewLine+ $@"Length of the download:  {length}";
+            }
         }
 
-        private void PrintResults(List<UrlDataModel> results)
+        private List<string> SetUpUrlList()
         {
-            resultsWindow.Text = "";
-            foreach (var item in results)
+            var list = new List<string>();
+            foreach (var item in listUrls.Items)
             {
-                resultsWindow.Text += $@"{ item.UrlName } downloaded: { item.UrlData } characters long.{ Environment.NewLine }";
+                list.Add(item.ToString());
             }
+            return list;
+        }
+
+        async Task<int> ProcessURL(string url, HttpClient client, CancellationToken ct)
+        {
+            HttpResponseMessage response = await client.GetAsync(url, ct);
+
+            byte[] urlContents = await response.Content.ReadAsByteArrayAsync();
+
+            return urlContents.Length;
         }
     }
 }
